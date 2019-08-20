@@ -1,6 +1,7 @@
 package com.sematecjavaproject.imdbassistant;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -29,20 +30,20 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText edtEnterTitle = findViewById(R.id.edtEnterTitle);
         Button btnSearchTitle = findViewById(R.id.btnSearchTitle);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         btnSearchTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String userMovie;
-                String url;
+                String urlMovieSearch;
 
                 userMovie = edtEnterTitle.getText().toString();
 
-                url = "http://www.omdbapi.com/?s=" + userMovie + "&apikey=71d684d9";
+                urlMovieSearch = "http://www.omdbapi.com/?s=" + userMovie + "&apikey=71d684d9";
                 AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-                asyncHttpClient.get(url, new JsonHttpResponseHandler() {
+                asyncHttpClient.get(urlMovieSearch, new JsonHttpResponseHandler() {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
                         IMDBMovieClass imdbClass = gson.fromJson(response.toString(), IMDBMovieClass.class);
                         List<Search> searchList = imdbClass.getSearch();
+
+
+                        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(searchList);
+                        recyclerView.setAdapter(recyclerAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
                     }
 
                     @Override

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sematecjavaproject.imdbassistant.IMDBClass.Search;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -34,6 +35,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
 
+        String moviePoster = searchResult.get(position).getPoster();
+        Picasso.get().load(moviePoster).into(holder.imageViewPoster);
+        String movieTitle = searchResult.get(position).getTitle();
+        holder.textViewTitle.setText(movieTitle);
+        String movieYear = searchResult.get(position).getYear();
+        holder.textViewYear.setText(movieYear);
     }
 
     @Override
@@ -45,12 +52,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         ImageView imageViewPoster;
         TextView textViewTitle;
-        TextView textViewRate;
+        TextView textViewYear;
 
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            imageViewPoster =itemView.findViewById(R.id.txtTitle);
+            imageViewPoster = itemView.findViewById(R.id.imgPoster);
+            textViewTitle = itemView.findViewById(R.id.txtTitle);
+            textViewYear = itemView.findViewById(R.id.txtYear);
         }
     }
 }
